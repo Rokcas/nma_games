@@ -23,6 +23,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  time_machine: ^0.9.13
+  timetable: ^0.2.6
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -48,6 +50,8 @@ flutter:
   assets:
     - assets/unspecified_game_photo.png
     - assets/placeholder.jpg
+    - packages/time_machine/data/cultures/cultures.bin
+    - packages/time_machine/data/tzdb/tzdb.bin
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

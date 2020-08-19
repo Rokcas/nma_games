@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nma_games/widgets/game_grid.dart';
+import 'package:nma_games/widgets/game_timetable.dart';
 
 import '../routes.dart';
 
@@ -18,7 +19,7 @@ class _MainPageState extends State<MainPage> {
       appBar: AppBar(
         title: Text("${tabNames[_currentIndex]}"),
       ),
-      body: GameGrid(),
+      body: _currentIndex == 0 ? GameGrid() : GameTimetable(),
       floatingActionButton: FloatingActionButton(
         onPressed: () => {
           Navigator.pushNamed(
