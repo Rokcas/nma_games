@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nma_games/widgets/game_grid.dart';
 
 class MainPage extends StatefulWidget {
   @override
@@ -15,16 +16,7 @@ class _MainPageState extends State<MainPage> {
       appBar: AppBar(
         title: Text("${tabNames[_currentIndex]}"),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
-          ],
-        ),
-      ),
+      body: GameGrid(),
       floatingActionButton: FloatingActionButton(
         onPressed: () => print("TODO"),
         tooltip: 'Increment',
