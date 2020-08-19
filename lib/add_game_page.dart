@@ -15,9 +15,8 @@ class AboutPage extends StatelessWidget {
 class AboutPageBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // TODO: Task 2
     return Center(
-      child: Text("TODO: Task 2"),
+      child: Text("TODO: Task 2132"),
     );
   }
 
