@@ -36,13 +36,24 @@ class GameTimetable extends StatelessWidget {
         color: Colors.yellow),
   ];
 
+  LocalTime getStartHour(){
+    LocalTime currentTime = LocalTime.currentClockTime();
+
+    if (currentTime.hourOfDay < 5)
+      return LocalTime(0, 0, 0);
+    if (currentTime.hourOfDay >= 14)
+      return LocalTime(13, 59, 59);
+
+    return currentTime.subtractHours(5);
+  }
+
   TimetableController myController() {
     return TimetableController(
       eventProvider: EventProvider.list(placeholderEvents),
       // Optional parameters with their default values:
       initialTimeRange: InitialTimeRange.range(
-        startTime: LocalTime(8, 0, 0),
-        endTime: LocalTime(20, 0, 0),
+        startTime: getStartHour(),
+        endTime: getStartHour().addHours(10),
       ),
       initialDate: LocalDate.today(),
       visibleRange: VisibleRange.days(3),
