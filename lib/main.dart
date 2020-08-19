@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      initialRoute: Routes.ROUTE_ADD_GAME_PAGE,
+      initialRoute: Routes.ROUTE_MAIN,
       onGenerateRoute: Routes.onGenerateRoute,
     );
   }
