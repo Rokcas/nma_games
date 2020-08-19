@@ -5,9 +5,16 @@ class AddGamePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("About NMAkademis"),
+        title: Text("Naujo žaidimo registracija"),
       ),
-      body: Container(child: AboutPageBody()),
+      body: Center(
+        child: Column(
+          children:[
+            Image.asset("assets/placeholder.jpg"),
+            Text(";labas")
+          ]
+        ),
+      ),
     );
   }
 }
