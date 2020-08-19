@@ -10,8 +10,7 @@ class AddGamePage extends StatelessWidget {
       body: Center(
         child: Column(
           children:[
-            Image.asset("assets/placeholder.jpg"),
-            Text(";labas")
+            Container(child: Image.asset("/assets/placeholder.jpg")),
           ]
         ),
       ),
