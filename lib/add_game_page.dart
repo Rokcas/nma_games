@@ -10,7 +10,8 @@ class AddGamePage extends StatelessWidget {
       body: Center(
         child: Column(
           children:[
-            Container(child: Image.asset("/assets/placeholder.jpg")),
+            Container(child: Image.asset("assets/placeholder.jpg")),
+
           ]
         ),
       ),
@@ -21,6 +22,7 @@ class AddGamePage extends StatelessWidget {
 class AboutPageBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    print(";abas");
     return Center(
       child: Text("TODO: Task 2132"),
     );
