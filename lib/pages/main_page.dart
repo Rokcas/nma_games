@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:nma_games/widgets/game_grid.dart';
 
+import '../routes.dart';
+
 class MainPage extends StatefulWidget {
   @override
   _MainPageState createState() => _MainPageState();
@@ -18,8 +20,13 @@ class _MainPageState extends State<MainPage> {
       ),
       body: GameGrid(),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => print("TODO"),
-        tooltip: 'Increment',
+        onPressed: () => {
+          Navigator.pushNamed(
+            context,
+            Routes.ROUTE_ADD_GAME_PAGE,
+          )
+      },
+        tooltip: 'Add a new game',
         child: Icon(Icons.add),
       ),
       bottomNavigationBar: BottomNavigationBar(
