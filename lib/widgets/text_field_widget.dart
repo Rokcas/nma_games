@@ -3,7 +3,6 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 
 class TextFieldWidget extends StatefulWidget {
-
   final myController = TextEditingController();
 
 //  @override
@@ -13,15 +12,18 @@ class TextFieldWidget extends StatefulWidget {
 //    super.dispose();
 //  }
 
-
-  final String value ;
+  final String value;
+  final int maxLines;
   final double size;
-  TextFieldWidget({Key key, @required this.value, @required this.size});
+
+  TextFieldWidget(
+      {Key key, @required this.value, @required this.size, this.maxLines});
 
   @override
-  _TextFieldWidgetState createState() => _TextFieldWidgetState(value:value, myController:myController, size:size);
+  _TextFieldWidgetState createState() => _TextFieldWidgetState(
+      value: value, myController: myController, size: size, maxLines: maxLines);
 
-  String getVal(){
+  String getVal() {
     print(myController.text);
     return myController.text;
   }
@@ -31,25 +33,33 @@ class _TextFieldWidgetState extends State<TextFieldWidget> {
   String value;
   double size = 200.0;
   final myController;
-  _TextFieldWidgetState({Key key, @required this.value, @required this.myController, @required this.size});
+  int maxLines = 1;
+
+  _TextFieldWidgetState(
+      {Key key,
+      @required this.value,
+      @required this.myController,
+      @required this.size,
+      this.maxLines});
 
   @override
   Widget build(BuildContext context) {
-
-    return Row(
-      children: [
-        Container(
-          width: size,
-          child: TextField(
-            decoration: InputDecoration(hintText: value),
-            textAlign: TextAlign.center,
-            controller: myController,
-//          selectionWidthStyle: BoxWidthStyle.max,
+    return Container(
+      child: TextField(
+        maxLines: maxLines,
+        decoration: InputDecoration(
+          hintText: value,
+//              focusedBorder: OutlineInputBorder(
+//                borderSide: BorderSide(color: Colors.greenAccent, width: 5.0),
+//              ),
+          enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.black, width: 1.0),
           ),
         ),
-
-      ],
-      mainAxisAlignment: MainAxisAlignment.center,
+        textAlign: TextAlign.left,
+        controller: myController,
+//          selectionWidthStyle: BoxWidthStyle.max,
+      ),
     );
   }
 }
