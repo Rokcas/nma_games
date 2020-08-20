@@ -15,13 +15,13 @@ class TextFieldWidget extends StatefulWidget {
 
 
   final String value ;
-  TextFieldWidget({Key key, this.value});
+  final double size;
+  TextFieldWidget({Key key, @required this.value, @required this.size});
 
   @override
-  _TextFieldWidgetState createState() => _TextFieldWidgetState(value:value, myController:myController);
+  _TextFieldWidgetState createState() => _TextFieldWidgetState(value:value, myController:myController, size:size);
 
   String getVal(){
-    print("esu cia");
     print(myController.text);
     return myController.text;
   }
@@ -29,8 +29,9 @@ class TextFieldWidget extends StatefulWidget {
 
 class _TextFieldWidgetState extends State<TextFieldWidget> {
   String value;
+  double size = 200.0;
   final myController;
-  _TextFieldWidgetState({Key key, this.value, this.myController});
+  _TextFieldWidgetState({Key key, @required this.value, @required this.myController, @required this.size});
 
   @override
   Widget build(BuildContext context) {
@@ -38,27 +39,14 @@ class _TextFieldWidgetState extends State<TextFieldWidget> {
     return Row(
       children: [
         Container(
-          width: 200,
+          width: size,
           child: TextField(
             decoration: InputDecoration(hintText: value),
+            textAlign: TextAlign.center,
             controller: myController,
 //          selectionWidthStyle: BoxWidthStyle.max,
           ),
         ),
-        FloatingActionButton(
-          onPressed: () {
-            return showDialog(
-              context: context,
-              builder: (context) {
-                return AlertDialog(
-                  content: Text(myController.text),
-                );
-              },
-            );
-          },
-          tooltip: 'Show me the value!',
-          child: Icon(Icons.text_fields),
-        )
 
       ],
       mainAxisAlignment: MainAxisAlignment.center,
