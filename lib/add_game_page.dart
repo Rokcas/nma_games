@@ -1,5 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:nma_games/routes.dart';
 import 'package:nma_games/widgets/text_field_widget.dart';
 
 class AddGamePage extends StatelessWidget {
@@ -78,7 +81,8 @@ class AddGamePage extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton.extended(
 //          floatingActionButtonLocation:FloatingActionButtonLocation.endDocked,
-        onPressed: () => sendNewGame(pav.getVal(), apr.getVal(), own.getVal(), mnP.getVal(), mxP.getVal(), context),
+        onPressed: () => sendNewGame(pav.getVal(), apr.getVal(), own.getVal(),
+            mnP.getVal(), mxP.getVal(), context),
         label: Text("Siųsti"),
         icon: Icon(Icons.send),
         backgroundColor: Colors.blueAccent,
@@ -115,7 +119,9 @@ class AddGamePage extends StatelessWidget {
           actions: [
             FlatButton(
               child: Text("OK"),
-              onPressed: () {Navigator.pop(context);},
+              onPressed: () {
+                Navigator.pop(context);
+              },
             ),
           ],
         );
@@ -132,6 +138,19 @@ class AddGamePage extends StatelessWidget {
     if (dataStatus != "Sėkminga") {
       ///
       alertMistake(dataStatus, context);
+    } else {
+      FirebaseFirestore.instance.collection("games").add({
+        "description": apr,
+        "title": pav,
+        "owner": owner,
+        "max_players": maxPlayers,
+        "min_players": minPlayers
+      }).then(print);
+
+      Navigator.pushNamed(
+        context,
+        Routes.ROUTE_MAIN,
+      );
     }
   }
 }
