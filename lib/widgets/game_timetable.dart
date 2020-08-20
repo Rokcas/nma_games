@@ -1,56 +1,23 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:time_machine/time_machine.dart';
 import 'package:timetable/timetable.dart';
 
 class GameTimetable extends StatelessWidget {
-  final List<BasicEvent> placeholderEvents = [
-    BasicEvent(
-        title: "TODO",
-        id: {},
-        start: LocalDateTime.now(),
-        end: LocalDateTime.now().addHours(3),
-        color: Colors.red),
-    BasicEvent(
-        title: "TODO",
-        id: {},
-        start: LocalDateTime.now().subtractHours(2),
-        end: LocalDateTime.now(),
-        color: Colors.blue),
-    BasicEvent(
-        title: "TODO",
-        id: {},
-        start: LocalDateTime.now().addHours(4),
-        end: LocalDateTime.now().addDays(1).addHours(2),
-        color: Colors.green),
-    BasicEvent(
-        title: "TODO",
-        id: {},
-        start: LocalDateTime.now().addDays(2),
-        end: LocalDateTime.now().addDays(2).addHours(3),
-        color: Colors.black),
-    BasicEvent(
-        title: "TODO",
-        id: {},
-        start: LocalDateTime.now(),
-        end: LocalDateTime.now().addHours(5),
-        color: Colors.yellow),
-  ];
-
-  LocalTime getStartHour(){
+  LocalTime getStartHour() {
     LocalTime currentTime = LocalTime.currentClockTime();
 
-    if (currentTime.hourOfDay < 5)
-      return LocalTime(0, 0, 0);
-    if (currentTime.hourOfDay >= 14)
-      return LocalTime(13, 59, 59);
+    if (currentTime.hourOfDay < 5) return LocalTime(0, 0, 0);
+    if (currentTime.hourOfDay >= 14) return LocalTime(13, 59, 59);
 
     return currentTime.subtractHours(5);
   }
 
-  TimetableController myController() {
+  TimetableController myController(var events) {
+    print("Number of events ${events.length}");
+    print(events.toString());
     return TimetableController(
-      eventProvider: EventProvider.list(placeholderEvents),
-      // Optional parameters with their default values:
+      eventProvider: EventProvider.list(events),
       initialTimeRange: InitialTimeRange.range(
         startTime: getStartHour(),
         endTime: getStartHour().addHours(10),
@@ -61,13 +28,57 @@ class GameTimetable extends StatelessWidget {
     );
   }
 
+  Widget _buildBody(BuildContext context) {
+    return StreamBuilder<QuerySnapshot>(
+      stream: FirebaseFirestore.instance.collection("events").snapshots(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) return LinearProgressIndicator();
+
+        return _buildTimetable(context, snapshot.data.docs);
+      },
+    );
+  }
+
+  BasicEvent _buildBasicEvent(BuildContext context, Map<String, dynamic> data) {
+    assert(data['start_time'] != null);
+    assert(data['end_time'] != null);
+    assert(data['color'] != null);
+    assert(data['title'] != null);
+
+    DateTime startDate = DateTime.fromMicrosecondsSinceEpoch(
+            data["start_time"].microsecondsSinceEpoch)
+        .toLocal();
+    DateTime endDate = DateTime.fromMicrosecondsSinceEpoch(
+            data["end_time"].microsecondsSinceEpoch)
+        .toLocal();
+
+    LocalDateTime start = LocalDateTime(startDate.year, startDate.month,
+        startDate.day, startDate.hour, startDate.minute, startDate.second);
+    LocalDateTime end = LocalDateTime(endDate.year, endDate.month, endDate.day,
+        endDate.hour, endDate.minute, endDate.second);
+
+    return BasicEvent(
+        start: start,
+        end: end,
+        color: Color(data["color"]),
+        id: {},
+        title: data["title"]);
+  }
+
+  Widget _buildTimetable(
+      BuildContext context, List<QueryDocumentSnapshot> docs) {
+    return Timetable(
+      controller: myController(docs
+          .map((event) => _buildBasicEvent(context, event.data()))
+          .toList()),
+      eventBuilder: (event) => BasicEventWidget(event),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Timetable(
-        controller: myController(),
-        eventBuilder: (event) => BasicEventWidget(event),
-      ),
+      child: _buildBody(context),
     );
   }
 }
