@@ -25,6 +25,9 @@ dependencies:
     sdk: flutter
   time_machine: ^0.9.13
   timetable: ^0.2.6
+  firebase_core: ^0.5.0
+  firebase_analytics: ^5.0.2
+  cloud_firestore: ^0.14.0+1
 
 
   # The following adds the Cupertino Icons font to your application.

@@ -11,7 +11,8 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   int _currentIndex = 0;
-  final tabNames = ["Todo 1", "Todo 2"];
+  final tabNames = ["Žaidimai", "Planai"];
+  final addPages = [Routes.ROUTE_ADD_GAME_PAGE, Routes.ROUTE_ADD_EVENT_PAGE];
 
   @override
   Widget build(BuildContext context) {
@@ -24,22 +25,22 @@ class _MainPageState extends State<MainPage> {
         onPressed: () => {
           Navigator.pushNamed(
             context,
-            Routes.ROUTE_ADD_GAME_PAGE,
+            addPages[_currentIndex],
           )
       },
         tooltip: 'Add a new game',
-        child: Icon(Icons.add),
+        child: _currentIndex == 1 ? Icon(Icons.add_alarm) : Icon(Icons.add),
       ),
       bottomNavigationBar: BottomNavigationBar(
         onTap: onTabTapped,
         currentIndex: _currentIndex,
         items: [
           BottomNavigationBarItem(
-            icon: new Icon(Icons.explore),
+            icon: new Icon(Icons.casino),
             title: Text("${tabNames[0]}".toUpperCase()),
           ),
           BottomNavigationBarItem(
-            icon: new Icon(Icons.movie),
+            icon: new Icon(Icons.date_range),
             title: Text("${tabNames[1]}".toUpperCase()),
           ),
         ],
