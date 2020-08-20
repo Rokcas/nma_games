@@ -12,6 +12,7 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   int _currentIndex = 0;
   final tabNames = ["Todo 1", "Todo 2"];
+  final addPages = [Routes.ROUTE_ADD_GAME_PAGE, Routes.ROUTE_ADD_EVENT_PAGE];
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +25,7 @@ class _MainPageState extends State<MainPage> {
         onPressed: () => {
           Navigator.pushNamed(
             context,
-            Routes.ROUTE_ADD_GAME_PAGE,
+            addPages[_currentIndex],
           )
       },
         tooltip: 'Add a new game',

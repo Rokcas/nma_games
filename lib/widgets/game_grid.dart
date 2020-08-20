@@ -1,7 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class GameGrid extends StatelessWidget {
-  Widget _buildGridItem(String title) {
+  Widget _buildGridItem(Map<String, dynamic> data) {
+    assert(data['title'] != null);
+    // TODO add more assertions
+
+
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(20.0),
@@ -21,7 +26,7 @@ class GameGrid extends StatelessWidget {
                       child: Padding(
                         padding: const EdgeInsets.all(2.0),
                         child: Text(
-                          'Item ',
+                          "${data["title"]}",
                           textAlign: TextAlign.center,
                           style: TextStyle(color: Colors.white),
                         ),
@@ -39,9 +44,16 @@ class GameGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GridView.count(
-        crossAxisCount: 2,
-        // Generate 100 widgets that display their index in the List.
-        children: [_buildGridItem("title")]);
+    return StreamBuilder<QuerySnapshot>(
+      stream: FirebaseFirestore.instance.collection("games").snapshots(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) return LinearProgressIndicator();
+
+        return GridView.count(
+          crossAxisCount: 2,
+          children: snapshot.data.docs.map((e) => _buildGridItem(e.data())).toList(),
+        );
+      },
+    );
   }
 }
