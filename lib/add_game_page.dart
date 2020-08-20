@@ -21,7 +21,7 @@ class AddGamePage extends StatelessWidget {
         size: inputWidth / 2 - 0.1 * inputWidth,
         maxLines: 1); // max players
     const double myPadding = 16.0;
-    return Scaffold(
+    var pageScaffold = Scaffold(
       resizeToAvoidBottomPadding: false,
       body: CustomScrollView(
         slivers: [
@@ -56,19 +56,19 @@ class AddGamePage extends StatelessWidget {
                     child: Container(
                       child: Row(
                         children: [
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.all(3.0),
-                            child: mxP,
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.all(3.0),
+                              child: mxP,
+                            ),
                           ),
-                        ),
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.all(3.0),
-                            child: mnP,
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.all(3.0),
+                              child: mnP,
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
                       ),
                     ),
                   ),
@@ -76,30 +76,62 @@ class AddGamePage extends StatelessWidget {
               ))
         ],
       ),
-      floatingActionButton:
-        FloatingActionButton.extended(
+      floatingActionButton: FloatingActionButton.extended(
 //          floatingActionButtonLocation:FloatingActionButtonLocation.endDocked,
-          onPressed: () => sendNewGame(pav, apr, own, mnP, mxP),
-          label: Text("Siųsti"),
-          icon: Icon(Icons.send),
-          backgroundColor: Colors.blueAccent,
+        onPressed: () => sendNewGame(pav.getVal(), apr.getVal(), own.getVal(), mnP.getVal(), mxP.getVal(), context),
+        label: Text("Siųsti"),
+        icon: Icon(Icons.send),
+        backgroundColor: Colors.blueAccent,
 //          icon: Icons.send,
 //        ),
-        ),
+      ),
+    );
+    return pageScaffold;
+  }
+
+  bool isNumeric(String s) {
+    if (s == null) return false;
+    return int.parse(s, onError: (e) => null) != null;
+  }
+
+  String dataStatusFinder(pav, apr, owner, minPlayers, maxPlayers) {
+    if (owner == "") return "Nepažymėtas savininkas";
+    if (apr == "") return "Nepažymėtas aprašymas";
+    if (pav == "") return "Nepažymėtas pavadinimas";
+    if (!isNumeric(minPlayers)) return "Blogas mažiausias žaidėjų skaičius";
+    if (!isNumeric(maxPlayers)) return "Blogas didžiausias žaidėjų skaičius";
+    if (int.parse(minPlayers) > int.parse(maxPlayers))
+      return "Mažiausias žaidėjų skaičius yra per didelis";
+    return "Sėkminga";
+  }
+
+  void alertMistake(s, BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Klaida"),
+          content: Text(s),
+          actions: [
+            FlatButton(
+              child: Text("OK"),
+              onPressed: () {Navigator.pop(context);},
+            ),
+          ],
+        );
+      },
     );
   }
-  String dataStatusFinder(pav, apr, owner, minPlayers, maxPlayers){
 
-    return "-";
-  }
-  void sendNewGame(pav, apr, owner, minPlayers, maxPlayers){ // String, String, String, int, int
-    print(pav.getVal());
-    String dataStatus = dataStatusFinder(pav, apr, owner, minPlayers, maxPlayers);
-    if(dataStatus != "Sėkminga"){  ///
-
-
+  void sendNewGame(
+      pav, apr, owner, minPlayers, maxPlayers, BuildContext context) {
+    // String, String, String, int, int
+    print(pav);
+    String dataStatus =
+        dataStatusFinder(pav, apr, owner, minPlayers, maxPlayers);
+    if (dataStatus != "Sėkminga") {
+      ///
+      alertMistake(dataStatus, context);
     }
-
-
   }
 }
