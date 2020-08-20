@@ -95,7 +95,7 @@ class AddGamePage extends StatelessWidget {
   void sendNewGame(pav, apr, owner, minPlayers, maxPlayers){ // String, String, String, int, int
     print(pav.getVal());
     String dataStatus = dataStatusFinder(pav, apr, owner, minPlayers, maxPlayers);
-    if(dataStatus != "Sėkminga"){
+    if(dataStatus != "Sėkminga"){  ///
 
 
     }
