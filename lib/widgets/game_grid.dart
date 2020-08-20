@@ -21,7 +21,7 @@ class GameGrid extends StatelessWidget {
                       child: Padding(
                         padding: const EdgeInsets.all(2.0),
                         child: Text(
-                          'Item $index',
+                          'Item ',
                           textAlign: TextAlign.center,
                           style: TextStyle(color: Colors.white),
                         ),
@@ -42,6 +42,6 @@ class GameGrid extends StatelessWidget {
     return GridView.count(
         crossAxisCount: 2,
         // Generate 100 widgets that display their index in the List.
-        children: [_buildGridItem(title)]);
+        children: [_buildGridItem("title")]);
   }
 }
