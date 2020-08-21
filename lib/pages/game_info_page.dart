@@ -4,31 +4,79 @@ import 'package:flutter/material.dart';
 import 'package:nma_games/models/game.dart';
 
 class GameInfoPage extends StatelessWidget {
-  const GameInfoPage({Key key, @required this.gameId})
-      : assert(gameId != null, "Please pass a game id as an argument"),
+  const GameInfoPage({Key key, @required this.game})
+      : assert(game != null, "Please pass a game as an argument"),
         super(key: key);
 
-  final String gameId;
+  final Game game;
 
   Widget _buildBody(BuildContext context, Game game) {
-    return Text("${game.title}");
+    return ListView(
+      children: [
+        Container(
+          height: 200,
+          child: Stack(
+            alignment: Alignment.bottomCenter,
+            children: [
+              Image.asset("assets/unspecified_game_photo.png"),
+              Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: Text(
+                  game.title,
+                  style: TextStyle(
+                    fontSize: 25,
+                    fontWeight: FontWeight.bold,
+//                    color: Colors.white,
+                    foreground: Paint()
+                      ..style = PaintingStyle.stroke
+                      ..strokeWidth = 2
+                      ..color = Colors.black,
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: Text(
+                  game.title,
+                  style: TextStyle(
+                    fontSize: 25,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(14.0),
+          child:
+              Text("Žaidėjų skaičius: ${game.minPlayers}-${game.maxPlayers}"),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(14.0),
+          child: Text("Savininkas: ${game.owner}"),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(14.0),
+          child: Text(
+            "Aprašymas",
+            style: TextStyle(fontSize: 20),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(14.0),
+          child: Text(game.description),
+        ),
+      ],
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: FutureBuilder<DocumentSnapshot>(
-        future: FirebaseFirestore.instance.collection("games")
-            .doc(gameId)
-            .get(),
-        builder: (context, snapshot) {
-          if (!snapshot.hasData) return LinearProgressIndicator();
-
-          return _buildBody(context, Game.fromDocumentData(snapshot.data));
-        },
-      )
-      ,
+      body: _buildBody(context, game),
     );
   }
 }

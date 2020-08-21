@@ -27,7 +27,7 @@ class Routes {
         });
       case ROUTE_GAME_INFO:
         return MaterialPageRoute(builder: (context) {
-          return GameInfoPage(gameId: settings.arguments);
+          return GameInfoPage(game: settings.arguments);
         });
       default:
         throw Exception("Unable to find route ${settings.name} in routes");
