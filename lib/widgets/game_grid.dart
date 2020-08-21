@@ -1,19 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:nma_games/models/game.dart';
+import 'package:nma_games/routes.dart';
 
 class GameGrid extends StatelessWidget {
-  Widget _buildGridItem(Map<String, dynamic> data) {
-    assert(data['title'] != null);
-    // TODO add more assertions
-
-
+  Widget _buildGridItem(BuildContext context, Game game) {
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(20.0),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(16),
           child: InkWell(
-            onTap: () => print("TODO"),
+            onTap: () => Navigator.pushNamed(context, Routes.ROUTE_GAME_INFO, arguments: game),
             child: Stack(
               children: [
                 Image.asset("assets/unspecified_game_photo.png"),
@@ -26,7 +24,7 @@ class GameGrid extends StatelessWidget {
                       child: Padding(
                         padding: const EdgeInsets.all(2.0),
                         child: Text(
-                          "${data["title"]}",
+                          game.title,
                           textAlign: TextAlign.center,
                           style: TextStyle(color: Colors.white),
                         ),
@@ -51,7 +49,7 @@ class GameGrid extends StatelessWidget {
 
         return GridView.count(
           crossAxisCount: 2,
-          children: snapshot.data.docs.map((e) => _buildGridItem(e.data())).toList(),
+          children: snapshot.data.docs.map((e) => _buildGridItem(context, Game.fromDocumentData(e.data()))).toList(),
         );
       },
     );
