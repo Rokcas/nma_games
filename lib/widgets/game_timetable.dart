@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:nma_games/models/event.dart';
 import 'package:time_machine/time_machine.dart';
 import 'package:timetable/timetable.dart';
 
@@ -14,8 +15,6 @@ class GameTimetable extends StatelessWidget {
   }
 
   TimetableController myController(var events) {
-    print("Number of events ${events.length}");
-    print(events.toString());
     return TimetableController(
       eventProvider: EventProvider.list(events),
       initialTimeRange: InitialTimeRange.range(
@@ -39,37 +38,11 @@ class GameTimetable extends StatelessWidget {
     );
   }
 
-  BasicEvent _buildBasicEvent(BuildContext context, Map<String, dynamic> data) {
-    assert(data['start_time'] != null);
-    assert(data['end_time'] != null);
-    assert(data['color'] != null);
-    assert(data['title'] != null);
-
-    DateTime startDate = DateTime.fromMicrosecondsSinceEpoch(
-            data["start_time"].microsecondsSinceEpoch)
-        .toLocal();
-    DateTime endDate = DateTime.fromMicrosecondsSinceEpoch(
-            data["end_time"].microsecondsSinceEpoch)
-        .toLocal();
-
-    LocalDateTime start = LocalDateTime(startDate.year, startDate.month,
-        startDate.day, startDate.hour, startDate.minute, startDate.second);
-    LocalDateTime end = LocalDateTime(endDate.year, endDate.month, endDate.day,
-        endDate.hour, endDate.minute, endDate.second);
-
-    return BasicEvent(
-        start: start,
-        end: end,
-        color: Color(data["color"]),
-        id: {},
-        title: data["title"]);
-  }
-
   Widget _buildTimetable(
       BuildContext context, List<QueryDocumentSnapshot> docs) {
     return Timetable(
       controller: myController(docs
-          .map((event) => _buildBasicEvent(context, event.data()))
+          .map((event) => buildBasicEvent(event.data()))
           .toList()),
       eventBuilder: (event) => BasicEventWidget(event),
     );

@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:nma_games/routes.dart';
@@ -145,7 +144,7 @@ class AddGamePage extends StatelessWidget {
         "owner": owner,
         "max_players": maxPlayers,
         "min_players": minPlayers
-      }).then(print);
+      });
 
       Navigator.pushNamed(
         context,

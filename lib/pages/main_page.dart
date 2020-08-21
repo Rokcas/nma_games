@@ -26,7 +26,7 @@ class _MainPageState extends State<MainPage> {
           Navigator.pushNamed(
             context,
             addPages[_currentIndex],
-          )
+          ),
       },
         tooltip: 'Add a new game',
         child: _currentIndex == 1 ? Icon(Icons.add_alarm) : Icon(Icons.add),
